@@ -47,19 +47,6 @@
 	)
 )
 
-;; FASE 2: Integración de la librería local-time en la función logging.
-
-(defun logging (timestamp color-anterior color-actual)
-	(if (>= timestamp 0)
-		(format t "[~A] la luz ha cambiado de ~A a ~A~%"
-			(local-time:format-timestring
-				nil
-				(local-time:unix-to-timestamp timestamp))
-			color-anterior
-			color-actual)
-	)
-)
-
 ;(defun logging (timestamp) ; considerar solo si hay que calcular en que color se encuentra y cual fue el anterior
 ;	(cond 
 ;		((and (<= timestamp 90) (equal (timer timestamp) 'en-rojo)) (format t "Tiempo ~A: la luz ha cambiado
@@ -126,3 +113,84 @@
 		(* (/ duracion-amarillo (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) 100)
 	)
 )
+
+
+
+
+;; FASE 2: Integración de la librería local-time en la función logging.
+
+;; ========================================================
+;; FUNCIÓN: logging
+;; NATURALEZA: Impura (imprime un mensaje)
+;; ESTRATEGIA: Formateo de salida
+;; IMPACTO: No destructiva (no modifica listas ni nada, recibe datos y los muestra)
+;; ========================================================
+
+(defun logging (timestamp color-anterior color-actual)
+	(if (>= timestamp 0)
+		(format t "[~A] la luz ha cambiado de ~A a ~A~%"
+			(local-time:format-timestring
+				nil
+				(local-time:unix-to-timestamp timestamp))
+			color-anterior
+			color-actual)
+	)
+)
+
+
+
+
+;; ITERACIÓN 2
+
+
+
+
+
+
+
+
+
+
+;;            LENGUAJE EN ERLANG
+;; ==================================================
+;; FUNCION: transicion
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Condicional con coincidencia de patrones
+;; IMPACTO: No destructiva
+;; ==================================================
+
+transicion(en_rojo, verde) ->
+    {en_rojo, "cambiar-a-verde"};      ;; las "," separan expresiones
+
+transicion(en_verde, amarillo) ->
+    {en_verde, "cambiar-a-amarillo"};  ;; los ";" separan alternativas condicionales
+
+transicion(en_amarillo, rojo) ->
+    {en_amarillo, "cambiar-a-rojo"};
+
+transicion(ColorActual, _) ->           ;; "_" significa cualquier valor
+    {ColorActual, accion_por_defecto}.  ;; se terminan las funciones con un "."
+
+;; en Erlang se definen varios casos de una misma función que se ejecutan
+;; cuando los parámetros coinciden con los de la implementación, eso 
+;; simplifica la lógica de múltiples comparaciones como en lisp
+
+;; ========================================================
+;; FUNCION: timer
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Condicional
+;; IMPACTO: No destructiva
+;; ========================================================
+
+timer(Timestamp) when Timestamp < 0 -> timestamp_invalido;  ;; caso en el que la función en el timestamp devuelve inválido
+
+timer(Timestamp) ->
+    Posicion = Timestamp rem 216,      ;; calcula la posición actual dentro del ciclo de 216 segundos
+                                       ;; en una valiable aux
+    if
+        Posicion < 90 -> en_rojo;
+
+        Posicion < 210 -> en_verde;
+
+        true -> en_amarillo
+    end.
