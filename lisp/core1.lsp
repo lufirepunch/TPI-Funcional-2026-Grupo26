@@ -7,14 +7,12 @@
 
 (defun transicion (color-actual cambiar-a)
 	(cond
-        ((and (equal color-actual 'en-rojo) (equal cambiar-a 'amarillo)) (list 'en-rojo "cambiar-a-amarillo"))
-        ((and (equal color-actual 'en-amarillo) (equal cambiar-a 'verde)) (list 'en-amarillo "cambiar-a-verde"))
-		((and (equal color-actual 'en-verde) (equal cambiar-a 'amarillo)) (list 'en-verde "cambiar-a-amarillo"))
+        ((and (equal color-actual 'en-rojo) (equal cambiar-a 'verde)) (list 'en-rojo "cambiar-a-verde"))
+        ((and (equal color-actual 'en-verde) (equal cambiar-a 'amarillo)) (list 'en-verde "cambiar-a-amarillo"))
 		((and (equal color-actual 'en-amarillo) (equal cambiar-a 'rojo)) (list 'en-amarillo "cambiar-a-rojo"))
 		(t (list color-actual 'accion-por-defecto))
 	)
 )
-
 ;; ========================================================
 ;; FUNCIÓN: timer
 ;; NATURALEZA: Pura (Dado un timestamp, siempre retorna el mismo color)
