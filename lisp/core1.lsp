@@ -47,6 +47,18 @@
 	)
 )
 
+;; FASE 2: Integración de la librería local-time en la función logging.
+
+(defun logging (timestamp color-anterior color-actual)
+	(if (>= timestamp 0)
+		(format t "[~A] la luz ha cambiado de ~A a ~A~%"
+			(local-time:format-timestring
+				nil
+				(local-time:unix-to-timestamp timestamp))
+			color-anterior
+			color-actual)
+	)
+)
 
 ;(defun logging (timestamp) ; considerar solo si hay que calcular en que color se encuentra y cual fue el anterior
 ;	(cond 
