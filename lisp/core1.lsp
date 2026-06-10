@@ -1,7 +1,7 @@
 ;; ========================================================
 ;; FUNCIÓN: transicion
 ;; NATURALEZA: Pura
-;; ESTRATEGIA: 
+;; ESTRATEGIA: Condicional
 ;; IMPACTO: No destructiva
 ;; ========================================================
 
@@ -9,14 +9,16 @@
 	(cond
         ((and (equal color-actual 'en-rojo) (equal cambiar-a 'amarillo)) (list 'en-rojo "cambiar-a-amarillo"))
         ((and (equal color-actual 'en-amarillo) (equal cambiar-a 'verde)) (list 'en-amarillo "cambiar-a-verde"))
-		((and (equal color-actual 'en-verde) (equal cambiar-a 'rojo)) (list 'en-verde "cambiar-a-rojo"))
+		((and (equal color-actual 'en-verde) (equal cambiar-a 'amarillo)) (list 'en-verde "cambiar-a-amarillo"))
+		((and (equal color-actual 'en-amarillo) (equal cambiar-a 'rojo)) (list 'en-amarillo "cambiar-a-rojo"))
+		(t (list color-actual 'accion-por-defecto))
 	)
 )
 
 ;; ========================================================
 ;; FUNCIÓN: timer
 ;; NATURALEZA: Pura (Dado un timestamp, siempre retorna el mismo color)
-;; ESTRATEGIA: Orden Superior (Implementada mediante mapcar y reduce)
+;; ESTRATEGIA: Condicional
 ;; IMPACTO: No destructiva
 ;; ========================================================
 ; ESTRATEGIA: La decisión del color se realiza mediante evaluaciones lógicas del resultado del resto implementadas con un cond.
@@ -39,6 +41,13 @@
 ;; IMPACTO: 
 ;; ========================================================
 
+(defun logging (timestamp)
+	(cond 
+		((equal (timer timestamp) 'en-rojo) (format t "Tiempo ~A: la luz ha cambiado
+		 de en-verde a en-rojo" timestamp))
+
+    )
+)
 
 
 ;; ========================================================
