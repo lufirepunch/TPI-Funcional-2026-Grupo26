@@ -7,9 +7,9 @@
 
 (defun transicion (color-actual cambiar-a)
 	(cond
-        ((and (equal color-actual 'en-rojo) (equal cambiar-a 'verde)) (list 'en-rojo "cambiar-a-verde"))
-        ((and (equal color-actual 'en-verde) (equal cambiar-a 'amarillo)) (list 'en-verde "cambiar-a-amarillo"))
-		((and (equal color-actual 'en-amarillo) (equal cambiar-a 'rojo)) (list 'en-amarillo "cambiar-a-rojo"))
+        ((and (equal color-actual 'en-rojo) (equal cambiar-a 'verde)) (list color-actual "cambiar-a-verde"))
+        ((and (equal color-actual 'en-verde) (equal cambiar-a 'amarillo)) (list color-actual "cambiar-a-amarillo"))
+		((and (equal color-actual 'en-amarillo) (equal cambiar-a 'rojo)) (list color-actual "cambiar-a-rojo"))
 		(t (list color-actual 'accion-por-defecto))
 	)
 )
@@ -25,8 +25,8 @@
 	(if (>= timestamp 0)
 		  (cond
 		       ((< (mod timestamp 216) 90) 'en-rojo)
-		       ((< (mod timestamp 216) 96) 'en-amarillo)
-		       (t 'en-verde)
+		       ((< (mod timestamp 216) 210) 'en-verde)
+		       (t 'en-amarillo)
 	      )
 	    'timestamp-invalido
 	)
