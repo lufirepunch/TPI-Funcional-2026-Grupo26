@@ -29,7 +29,7 @@
 		       ((< (mod timestamp 216) 210) 'en-verde)
 		       (t 'en-amarillo)
 	      )
-	    nil
+	    'timestamp-invalido
 	)
 )
 
@@ -48,15 +48,14 @@
 )
 
 
-(defun logging (timestamp) ; considerar solo si hay que calcular en que color se encuentra y cual fue el anterior
-	(cond 
-		((and (<= timestamp 90) (equal (timer timestamp) 'en-rojo)) (format t "Tiempo ~A: la luz ha cambiado
-		 de en-amarillo a en-rojo" timestamp))
-		((and (<= timestamp 210) (equal (timer timestamp) 'en-verde)) (format t "Tiempo ~A: la luz ha cambiado
-		 de en-rojo a en-verde" timestamp))
-		(t (format t "Tiempo ~A: la luz ha cambiado de en-verde a en-amarillo" timestamp)))
-
-)
+;(defun logging (timestamp) ; considerar solo si hay que calcular en que color se encuentra y cual fue el anterior
+;	(cond 
+;		((and (<= timestamp 90) (equal (timer timestamp) 'en-rojo)) (format t "Tiempo ~A: la luz ha cambiado
+;		 de en-amarillo a en-rojo" timestamp))
+;		((and (<= timestamp 210) (equal (timer timestamp) 'en-verde)) (format t "Tiempo ~A: la luz ha cambiado
+;		 de en-rojo a en-verde" timestamp))
+;		(t (format t "Tiempo ~A: la luz ha cambiado de en-verde a en-amarillo" timestamp)))
+;)
 
 
 ;; ========================================================
@@ -81,12 +80,10 @@
 ;; ========================================================
 
 (defun recomendacion-ciclo (duracion-ciclo)
-	(if 
-		(cond
-	         ((< duracion-ciclo 35) "Duración baja según estándares de ingeniería de tráfico")
-	         ((> duracion-ciclo 150) "Duración elevada según estándares de ingeniería de tráfico")
-	         (t  "Duración óptima según estándares de ingeniería de tráfico!!"))
-		nil
+	(cond
+	    ((< duracion-ciclo 35) "Duración baja según estándares de ingeniería de tráfico")
+	    ((> duracion-ciclo 150) "Duración elevada según estándares de ingeniería de tráfico")
+	    (t  "Duración óptima según estándares de ingeniería de tráfico!!")
 	)
 )
 
