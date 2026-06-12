@@ -9,8 +9,8 @@
 	(cond
         ((and (equal color-actual 'en-rojo) (equal cambiar-a 'verde)) (list color-actual "cambiar-a-verde"))
         ((and (equal color-actual 'en-verde) (equal cambiar-a 'amarillo)) (list color-actual "cambiar-a-amarillo"))
-		((and (equal color-actual 'en-amarillo) (equal cambiar-a 'rojo)) (list color-actual "cambiar-a-rojo"))
-		(t (list color-actual 'accion-por-defecto))
+		    ((and (equal color-actual 'en-amarillo) (equal cambiar-a 'rojo)) (list color-actual "cambiar-a-rojo"))
+		    (t (list color-actual 'accion-por-defecto))
 	)
 )
 
@@ -142,6 +142,47 @@
 
 ;; ITERACIÓN 2
 
+
+;; ========================================================
+;; FUNCIÓN: transicion
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Condicional
+;; IMPACTO: No destructiva
+;; ========================================================
+
+(defun transicion (color-actual cambiar-a)
+	(cond
+        ((and (equal color-actual 'en-rojo) (equal cambiar-a 'rojo-intermitente)) (list color-actual "cambiar-a-rojo-intermitente"))
+        ((and (equal color-actual 'en-rojo-intermitente) (equal cambiar-a 'verde)) (list color-actual "cambiar-a-verde"))
+        ((and (equal color-actual 'en-verde) (equal cambiar-a 'verde-intermitente)) (list color-actual "cambiar-a-verde-intermitente"))
+        ((and (equal color-actual 'en-verde-intermitente) (equal cambiar-a 'amarillo)) (list color-actual "cambiar-a-amarillo"))
+        ((and (equal color-actual 'en-amarillo) (equal cambiar-a 'amarillo-intermitente)) (list color-actual "cambiar-a-amarillo-intermitente"))
+	    	((and (equal color-actual 'en-amarillo-intermitente) (equal cambiar-a 'rojo)) (list color-actual "cambiar-a-rojo"))	    	
+	    	(t (list color-actual 'accion-por-defecto))
+	)
+)
+
+
+;; ========================================================
+;; FUNCIÓN: timer
+;; NATURALEZA: Pura (dado un timestamp, siempre retorna el mismo color)
+;; ESTRATEGIA:  Condicional. La decisión del color se realiza mediante evaluaciones lógicas del resultado del resto. 
+;; IMPACTO: No destructiva
+;; ========================================================
+
+(defun timer (timestamp)
+	(if (>= timestamp 0)
+		  (cond
+		       ((< (mod timestamp 225) 90) 'en-rojo)
+		       ((< (mod timestamp 225) 93) 'en-rojo-intermitente)
+		       ((< (mod timestamp 225) 213) 'en-verde)
+		       ((< (mod timestamp 225) 216) 'en-verde-intermitente)
+		       ((< (mod timestamp 225) 222) 'en-amarillo)
+		       (t 'en-amarillo-intermitente)
+	      )
+	    'timestamp-invalido
+	)
+)
 
 
 
