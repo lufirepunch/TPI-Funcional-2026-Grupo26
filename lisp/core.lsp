@@ -1,3 +1,34 @@
+(defun ingresar-datos()
+	(let (timestamp minutos duracion-rojo duracion-verde duracion-amarillo)
+		(pprint "Ingrese un tiempo en segundos: ")
+		(setq timestamp (read))
+		(pprint "Ingrese un tiempo en minutos: ")
+		(setq minutos (read))
+		(pprint "Ingrese la duracion del color rojo: ")
+		(setq duracion-rojo (read))
+		(pprint "Ingrese la duracion del color verde: ")
+		(setq duracion-verde (read))
+		(pprint "Ingrese la duracion del color amarillo: ")
+		(setq duracion-amarillo (read))
+
+		(if (and (numberp timestamp) (numberp minutos) (numberp duracion-rojo) (numberp duracion-verde) (numberp duracion-amarillo))
+			)
+	)
+
+)
+
+(defun ejecutarSemaforo (timestamp minutos duracion-rojo duracion-verde duracion-amarillo)
+	(progn 
+		    (pprint (transicion (timer timestamp duracion-rojo duracion-verde duracion-amarillo)))
+		    (pprint (logging timestamp))
+		    (pprint "El ciclo dura ~A segundos" (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo))
+		    (pprint (recomendacion-ciclo duracion-rojo duracion-verde duracion-amarillo))
+		    (pprint "En ~A minutos el ciclo se ejecuta ~A veces" minutos (ciclos-por-tiempo minutos duracion-rojo duracion-verde duracion-amarillo))
+
+
+)
+
+
 ;; ========================================================
 ;; FUNCIÓN: transicion
 ;; NATURALEZA: Pura
@@ -5,11 +36,11 @@
 ;; IMPACTO: No destructiva
 ;; ========================================================
 
-(defun transicion (color-actual cambiar-a)
+(defun transicion (color-actual) ;; color-actual es timer
 	(cond
-        ((and (equal color-actual 'en-rojo) (equal cambiar-a 'verde)) (list color-actual "cambiar-a-verde"))
-        ((and (equal color-actual 'en-verde) (equal cambiar-a 'amarillo)) (list color-actual "cambiar-a-amarillo"))
-		    ((and (equal color-actual 'en-amarillo) (equal cambiar-a 'rojo)) (list color-actual "cambiar-a-rojo"))
+        ((equal color-actual 'en-rojo) (list color-actual "cambiar-a-verde"))
+        ((equal color-actual 'en-verde) (list color-actual "cambiar-a-amarillo"))
+		    ((equal color-actual 'en-amarillo) (list color-actual "cambiar-a-rojo"))
 		    (t (list color-actual 'accion-por-defecto))
 	)
 )
@@ -22,11 +53,11 @@
 ;; IMPACTO: No destructiva
 ;; ========================================================
 
-(defun timer (timestamp)
+(defun timer (timestamp duracion-rojo duracion-verde duracion-amarillo)
 	(if (>= timestamp 0)
 		  (cond
-		       ((< (mod timestamp 216) 90) 'en-rojo)
-		       ((< (mod timestamp 216) 210) 'en-verde)
+		       ((<= (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo) duracion-rojo) 'en-rojo)
+		       ((<= (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo) duracion-verde) 'en-verde)
 		       (t 'en-amarillo)
 	      )
 	    'timestamp-invalido
@@ -41,20 +72,15 @@
 ;; IMPACTO: No destructiva (no modifica listas ni nada, recibe datos y los muestra)
 ;; ========================================================
 
-(defun logging (timestamp color-anterior color-actual) 
-	(if (>= timestamp 0)
-		(format t "Tiempo ~A: la luz ha cambiado de ~A a ~A~%" timestamp color-anterior color-actual) nil
-	)
-)
 
-;(defun logging (timestamp) ; considerar solo si hay que calcular en que color se encuentra y cual fue el anterior
-;	(cond 
-;		((and (<= timestamp 90) (equal (timer timestamp) 'en-rojo)) (format t "Tiempo ~A: la luz ha cambiado
-;		 de en-amarillo a en-rojo" timestamp))
-;		((and (<= timestamp 210) (equal (timer timestamp) 'en-verde)) (format t "Tiempo ~A: la luz ha cambiado
-;		 de en-rojo a en-verde" timestamp))
-;		(t (format t "Tiempo ~A: la luz ha cambiado de en-verde a en-amarillo" timestamp)))
-;)
+(defun logging (timestamp)
+	(cond
+		((equal (timer timestamp) 'en-rojo) (format t "Tiempo ~A: la luz ha cambiado de en-amarillo a en-rojo" timestamp))
+		((equal (timer timestamp) 'en-verde) (format t "Tiempo ~A: la luz ha cambiado de en-rojo a en-verde" timestamp))
+		((equal (timer timestamp) 'en-amarillo) (format t "Tiempo ~A: la luz ha cambiado de en-verde a en-amarillo" timestamp))
+		(t 'timestamp-invalido)
+  )
+)
 
 
 ;; ========================================================
@@ -78,10 +104,10 @@
 ;; IMPACTO: No destructiva
 ;; ========================================================
 
-(defun recomendacion-ciclo (duracion-ciclo)
+(defun recomendacion-ciclo (duracion-rojo duracion-verde duracion-amarillo)
 	(cond
-	    ((< duracion-ciclo 35) "Duración baja según estándares de ingeniería de tráfico")
-	    ((> duracion-ciclo 150) "Duración elevada según estándares de ingeniería de tráfico")
+	    ((< (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo) 35) "Duración baja según estándares de ingeniería de tráfico")
+	    ((> (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo) 150) "Duración elevada según estándares de ingeniería de tráfico")
 	    (t  "Duración óptima según estándares de ingeniería de tráfico!!")
 	)
 )
@@ -117,6 +143,8 @@
 
 
 
+
+
 ;; FASE 2: Integración de la librería local-time en la función logging.
 
 ;; ========================================================
@@ -126,63 +154,19 @@
 ;; IMPACTO: No destructiva (no modifica listas ni nada, recibe datos y los muestra)
 ;; ========================================================
 
-(defun logging (timestamp color-anterior color-actual)
-	(if (>= timestamp 0)
-		(format t "[~A] la luz ha cambiado de ~A a ~A~%"
-			(local-time:format-timestring
-				nil
-				(local-time:unix-to-timestamp timestamp))
-			color-anterior
-			color-actual)
-	)
+
+(defun logging (timestamp) ; considerar solo si hay que calcular en que color se encuentra y cual fue el anterior
+	(cond 
+		((equal (timer timestamp) 'en-rojo) (format t "Tiempo ~A: la luz ha cambiado de en-amarillo a en-rojo" 
+			(local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
+		((equal (timer timestamp) 'en-verde) (format t "Tiempo ~A: la luz ha cambiado de en-rojo a en-verde"
+			(local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
+		((equal (timer timestamp) 'en-amarillo) (format t "Tiempo ~A: la luz ha cambiado de en-verde a en-amarillo"
+		  (local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
+		(t 'timestamp-invalido)
+  )
 )
 
-
-
-
-;; ITERACIÓN 2
-
-
-;; ========================================================
-;; FUNCIÓN: transicion
-;; NATURALEZA: Pura
-;; ESTRATEGIA: Condicional
-;; IMPACTO: No destructiva
-;; ========================================================
-
-(defun transicion (color-actual cambiar-a)
-	(cond
-        ((and (equal color-actual 'en-rojo) (equal cambiar-a 'rojo-intermitente)) (list color-actual "cambiar-a-rojo-intermitente"))
-        ((and (equal color-actual 'en-rojo-intermitente) (equal cambiar-a 'verde)) (list color-actual "cambiar-a-verde"))
-        ((and (equal color-actual 'en-verde) (equal cambiar-a 'verde-intermitente)) (list color-actual "cambiar-a-verde-intermitente"))
-        ((and (equal color-actual 'en-verde-intermitente) (equal cambiar-a 'amarillo)) (list color-actual "cambiar-a-amarillo"))
-        ((and (equal color-actual 'en-amarillo) (equal cambiar-a 'amarillo-intermitente)) (list color-actual "cambiar-a-amarillo-intermitente"))
-	    	((and (equal color-actual 'en-amarillo-intermitente) (equal cambiar-a 'rojo)) (list color-actual "cambiar-a-rojo"))	    	
-	    	(t (list color-actual 'accion-por-defecto))
-	)
-)
-
-
-;; ========================================================
-;; FUNCIÓN: timer
-;; NATURALEZA: Pura (dado un timestamp, siempre retorna el mismo color)
-;; ESTRATEGIA:  Condicional. La decisión del color se realiza mediante evaluaciones lógicas del resultado del resto. 
-;; IMPACTO: No destructiva
-;; ========================================================
-
-(defun timer (timestamp)
-	(if (>= timestamp 0)
-		  (cond
-		       ((< (mod timestamp 225) 90) 'en-rojo)
-		       ((< (mod timestamp 225) 93) 'en-rojo-intermitente)
-		       ((< (mod timestamp 225) 213) 'en-verde)
-		       ((< (mod timestamp 225) 216) 'en-verde-intermitente)
-		       ((< (mod timestamp 225) 222) 'en-amarillo)
-		       (t 'en-amarillo-intermitente)
-	      )
-	    'timestamp-invalido
-	)
-)
 
 
 
