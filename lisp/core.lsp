@@ -56,8 +56,8 @@
 (defun timer (timestamp duracion-rojo duracion-verde duracion-amarillo)
 	(if (>= timestamp 0)
 		  (cond
-		       ((<= (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo) duracion-rojo) 'en-rojo)
-		       ((<= (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo) duracion-verde) 'en-verde)
+		       ((< (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo) duracion-rojo) 'en-rojo)
+		       ((< (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo) duracion-verde) 'en-verde)
 		       (t 'en-amarillo)
 	      )
 	    'timestamp-invalido

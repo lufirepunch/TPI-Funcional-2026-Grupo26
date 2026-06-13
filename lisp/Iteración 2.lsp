@@ -40,11 +40,11 @@
 (defun timer (timestamp duracion-rojo duracion-verde duracion-amarillo)
 	(if (>= timestamp 0)
 		  (cond
-		       ((<= (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) duracion-rojo) 'en-rojo)
-		       ((<= (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) (+ duracion-rojo 3)) 'en-rojo-intermitente)
-		       ((<= (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) duracion-verde) 'en-verde)
-		       ((<= (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) (+ duracion-verde 3)) 'en-verde-intermitente)
-		       ((<= (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) duracion-amarillo) 'en-amarillo)
+		       ((< (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) duracion-rojo) 'en-rojo)
+		       ((< (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) (+ duracion-rojo 3)) 'en-rojo-intermitente)
+		       ((< (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) (+ duracion-rojo 3 duracion-verde)) 'en-verde)
+		       ((< (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) (+ duracion-rojo 3 duracion-verde 3)) 'en-verde-intermitente)
+		       ((= (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) (+ duracion-rojo 3 duracion-verde 3 duracion-amarillo)) 'en-amarillo)
 		       (t 'en-amarillo-intermitente)
 	      )
 	    'timestamp-invalido
