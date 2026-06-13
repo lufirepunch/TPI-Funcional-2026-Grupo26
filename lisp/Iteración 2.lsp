@@ -44,7 +44,7 @@
 		       ((< (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) (+ duracion-rojo 3)) 'en-rojo-intermitente)
 		       ((< (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) (+ duracion-rojo 3 duracion-verde)) 'en-verde)
 		       ((< (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) (+ duracion-rojo 3 duracion-verde 3)) 'en-verde-intermitente)
-		       ((= (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) (+ duracion-rojo 3 duracion-verde 3 duracion-amarillo)) 'en-amarillo)
+		       ((< (mod timestamp (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) (+ duracion-rojo 3 duracion-verde 3 duracion-amarillo)) 'en-amarillo)
 		       (t 'en-amarillo-intermitente)
 	      )
 	    'timestamp-invalido
@@ -135,19 +135,19 @@
 ;; EXTENSIÓN 2
 
 
-(defun logging (timestamp) ; considerar solo si hay que calcular en que color se encuentra y cual fue el anterior
+(defun logging (timestamp duracion-rojo duracion-verde duracion-amarillo) ; considerar solo si hay que calcular en que color se encuentra y cual fue el anterior
 	(cond 
-		((equal (timer timestamp) 'en-rojo) (format nil "Tiempo ~A: la luz ha cambiado de en-amarillo_intermitente a en-rojo" 
+		((equal (timer timestamp duracion-rojo duracion-verde duracion-amarillo) 'en-rojo) (format nil "Tiempo ~A: la luz ha cambiado de en-amarillo_intermitente a en-rojo" 
 			(local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
-		((equal (timer timestamp) 'en-rojo-intermitente) (format nil "Tiempo ~A: la luz ha cambiado de en-rojo a en-rojo-intermitente" 
+		((equal (timer timestamp duracion-rojo duracion-verde duracion-amarillo) 'en-rojo-intermitente) (format nil "Tiempo ~A: la luz ha cambiado de en-rojo a en-rojo-intermitente" 
 			(local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
-		((equal (timer timestamp) 'en-verde) (format nil "Tiempo ~A: la luz ha cambiado de en-rojo-intermitente a en-verde"
+		((equal (timer timestamp duracion-rojo duracion-verde duracion-amarillo) 'en-verde) (format nil "Tiempo ~A: la luz ha cambiado de en-rojo-intermitente a en-verde"
 			(local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
-		((equal (timer timestamp) 'en-verde-intermitente) (format nil "Tiempo ~A: la luz ha cambiado de en-verde a en-verde-intermitente"
+		((equal (timer timestamp duracion-rojo duracion-verde duracion-amarillo) 'en-verde-intermitente) (format nil "Tiempo ~A: la luz ha cambiado de en-verde a en-verde-intermitente"
 		  (local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
-		((equal (timer timestamp) 'en-amarillo) (format nil "Tiempo ~A: la luz ha cambiado de en-verde-intermitente a en-amarillo"
+		((equal (timer timestamp duracion-rojo duracion-verde duracion-amarillo) 'en-amarillo) (format nil "Tiempo ~A: la luz ha cambiado de en-verde-intermitente a en-amarillo"
 		  (local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
-        ((equal (timer timestamp) 'en-amarillo-intermitente) (format nil "Tiempo ~A: la luz ha cambiado de en-amarillo a en-amarillo_intermitente-intermitente"
+        ((equal (timer timestamp duracion-rojo duracion-verde duracion-amarillo)'en-amarillo-intermitente) (format nil "Tiempo ~A: la luz ha cambiado de en-amarillo a en-amarillo-intermitente"
 		  (local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
 
 		(t 'timestamp-invalido)
@@ -174,5 +174,5 @@
 )
 
 ;; Cuando se invoque a la funcion informe quedaria asi 
-;; (informe (list (logging 17000000) (logging 13499595) (logging 20004840)))
-;; Es decir una lista de listas con el resultado de logging
+;; (informe (list (logging 17000000 90 120 6) (logging 13499595 90 120 6) (logging 20004840 90 120 6) ))
+;; Es decir una lista de cadenas de texto con el resultado de logging
