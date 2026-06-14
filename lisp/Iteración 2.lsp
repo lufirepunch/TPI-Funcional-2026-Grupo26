@@ -62,19 +62,19 @@
 
 
 
-(defun logging (timestamp) ; considerar solo si hay que calcular en que color se encuentra y cual fue el anterior
+(defun logging (timestamp duracion-rojo duracion-verde duracion-amarillo) ; considerar solo si hay que calcular en que color se encuentra y cual fue el anterior
 	(cond 
-		((equal (timer timestamp) 'en-rojo) (format t "Tiempo ~A: la luz ha cambiado de en-amarillo_intermitente a en-rojo" 
+		((equal (timer timestamp duracion-rojo duracion-verde duracion-amarillo) 'en-rojo) (format t "Tiempo ~A: la luz ha cambiado de en-amarillo_intermitente a en-rojo" 
 			(local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
-		((equal (timer timestamp) 'en-rojo-intermitente) (format t "Tiempo ~A: la luz ha cambiado de en-rojo a en-rojo-intermitente" 
+		((equal (timer timestamp duracion-rojo duracion-verde duracion-amarillo) 'en-rojo-intermitente) (format t "Tiempo ~A: la luz ha cambiado de en-rojo a en-rojo-intermitente" 
 			(local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
-		((equal (timer timestamp) 'en-verde) (format t "Tiempo ~A: la luz ha cambiado de en-rojo-intermitente a en-verde"
+		((equal (timer timestamp duracion-rojo duracion-verde duracion-amarillo) 'en-verde) (format t "Tiempo ~A: la luz ha cambiado de en-rojo-intermitente a en-verde"
 			(local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
-		((equal (timer timestamp) 'en-verde-intermitente) (format t "Tiempo ~A: la luz ha cambiado de en-verde a en-verde-intermitente"
+		((equal (timer timestamp duracion-rojo duracion-verde duracion-amarillo) 'en-verde-intermitente) (format t "Tiempo ~A: la luz ha cambiado de en-verde a en-verde-intermitente"
 		  (local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
-		((equal (timer timestamp) 'en-amarillo) (format t "Tiempo ~A: la luz ha cambiado de en-verde-intermitente a en-amarillo"
+		((equal (timer timestamp duracion-rojo duracion-verde duracion-amarillo) 'en-amarillo) (format t "Tiempo ~A: la luz ha cambiado de en-verde-intermitente a en-amarillo"
 		  (local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
-        ((equal (timer timestamp) 'en-amarillo-intermitente) (format t "Tiempo ~A: la luz ha cambiado de en-amarillo a en-amarillo_intermitente-intermitente"
+        ((equal (timer timestamp duracion-rojo duracion-verde duracion-amarillo) 'en-amarillo-intermitente) (format t "Tiempo ~A: la luz ha cambiado de en-amarillo a en-amarillo-intermitente"
 		  (local-time:format-timestring nil (local-time:unix-to-timestamp timestamp))))
 
 		(t 'timestamp-invalido)
