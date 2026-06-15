@@ -74,6 +74,7 @@
 ;; IMPACTO: No destructiva (no modifica listas ni nada, recibe datos y los muestra)
 ;; ========================================================
 
+(ql:quickload :local-time)
 
 (defun logging (timestamp duracion-rojo duracion-verde duracion-amarillo)
 	(cond
@@ -156,6 +157,7 @@
 ;; IMPACTO: No destructiva (no modifica listas ni nada, recibe datos y los muestra)
 ;; ========================================================
 
+(ql:quickload :local-time)
 
 (defun logging (timestamp duracion-rojo duracion-verde duracion-amarillo) ; considerar solo si hay que calcular en que color se encuentra y cual fue el anterior
 	(cond 
