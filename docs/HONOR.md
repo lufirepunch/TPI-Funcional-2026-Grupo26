@@ -1,4 +1,4 @@
-# TPI-Funcional-2026-Grupo26/docs
+# CODIGO DE HONOR
 
 Integrante 1: [Fernández Lucía Belén] - Usuario GitHub: [lufirepunch]
 1. Código en Common Lisp (Fase 1 y 2)
