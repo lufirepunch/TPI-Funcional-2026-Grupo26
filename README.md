@@ -3,7 +3,7 @@
 ## Sistema de Semáforos Inteligentes 
 
 ## Link al video de youtube de defensa: 
-
+https://youtu.be/3JC3FGsj40w
 ## Integrantes
 Rojas Camila Agustina de Jesús | [@camilarojass19](https://github.com/camilarojass19) |
 Fernández Lucía Belén | [@lufirepunch](https://github.com/lufirepunch) |
