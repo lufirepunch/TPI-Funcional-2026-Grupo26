@@ -16,8 +16,8 @@
 			(pprint "Datos inválidos")
 			)
 	)
-
 )
+;; en este caso unicamente se uso la funcion seq para el ingreso y lectura de los datos/variables, como buena practica de la materia!!
 
 (defun ejecutarSemaforo (timestamp minutos duracion-rojo duracion-verde duracion-amarillo)
 	(progn 

@@ -98,6 +98,22 @@
 
 
 ;; ========================================================
+;; FUNCIÓN: recomendacion-ciclo
+;; NATURALEZA: Pura (devuelve la recomendación pero no imprime)
+;; ESTRATEGIA: Análisis lógico condicional
+;; IMPACTO: No destructiva
+;; ========================================================
+
+(defun recomendacion-ciclo (duracion-rojo duracion-verde duracion-amarillo)
+	(cond
+	    ((< (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo) 35) "Duración baja según estándares de ingeniería de tráfico")
+	    ((> (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo) 150) "Duración elevada según estándares de ingeniería de tráfico")
+	    (t  "Duración óptima según estándares de ingeniería de tráfico!!")
+	)
+)
+
+
+;; ========================================================
 ;; FUNCIÓN: ciclos-por-tiempo
 ;; NATURALEZA: Pura
 ;; ESTRATEGIA: Aritmética redondeando a la parte entera
@@ -125,7 +141,6 @@
 		(*(/ 3 (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) 100)               ;; porcentaje intermitencia verde
 		(* (/ duracion-amarillo (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) 100)
 		(*(/ 3 (duracion-ciclo duracion-rojo duracion-verde duracion-amarillo)) 100)               ;; porcentaje intermitencia amarilla
-
 	)
 )
 
