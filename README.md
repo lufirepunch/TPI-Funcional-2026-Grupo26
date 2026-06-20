@@ -7,7 +7,7 @@ Este trabajo práctico fue desarrollado por estudiantes de la Universidad Nacion
 implementar un sistema de semáforos en Common Lisp, aplicando programación funcional: funciones puras, sin variables globales y sin bucles imperativos. 
 Además integrar la librería local-time via Quicklisp y reimplementar partes del sistema en Erlang, nuestro lenguaje asignado, para comparar ambos lenguajes.
 
-## Link al video de youtube de defensa:  (https://youtu.be/3JC3FGsj40w)
+## Link al video de youtube de defensa:  (https://youtu.be/3JC3FGsj40w)](https://youtu.be/HUmAhnoKN7I)
 
 ## Integrantes
 Rojas Camila Agustina de Jesús | [@camilarojass19](https://github.com/camilarojass19) | 
